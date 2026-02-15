@@ -72,9 +72,9 @@ Bu proje şunları gösterir:
 
 **Not:** Bu TÜBİTAK 4006 için eğitim projesidir. Gerçek üretim ortamında Ethereum veya Solana gibi kurulu blockchain platformları kullanılmalıdır.
 
-## 👨‍🎓 Geliştirici
+## 👨‍🎓 Geliştiriciler
 
-Lise Öğrencisi - TÜBİTAK 4006 Bilim Fuarı Projesi 2026
+Yağız Günay/Efe Çelik - TÜBİTAK 4006 Bilim Fuarı Projesi 2026
 
 ## 📄 Lisans
 
@@ -83,24 +83,15 @@ Eğitim Projesi - Tüm Hakları Saklıdır
 ## 🙏 Teşekkürler
 
 - TÜBİTAK 4006 Bilim Fuarı Programı
-- Streamlit'e harika framework için
 - Danışman öğretmenime destekleri için
-
 ---
 
-**TÜBİTAK 4006 için ❤️ ile yapıldı**
+**TÜBİTAK 4006 için yapıldı**
 
-## 📸 Ekran Görüntüleri
-
-*(Uygulama çalışırken screenshot alıp buraya ekle)*
-
-## 🎥 Demo Video
-
-*(YouTube'a demo video yükleyip linki buraya ekle)*
 
 ## 📞 İletişim
 
-Sorularınız için: [GitHub Issues](https://github.com/kullaniciadin/artguard-ai/issues)
+Sorularınız için: +90 5301525021 - +90 505 806 14 17 / yyagizgunay@gmail.com-
 
 ## 🏆 Nasıl Katkıda Bulunulur?
 
@@ -109,5 +100,4 @@ Bu eğitim projesidir, ancak önerileriniz için Issues bölümünü kullanabili
 ## ⚡ Hızlı Linkler
 
 - [Streamlit Cloud'a Deploy Rehberi](DEPLOY_REHBERI.md)
-- [Kurulum Videosu](#) *(ekle)*
 - [Proje Raporu](#) *(ekle)*
