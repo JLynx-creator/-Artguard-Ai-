@@ -7,7 +7,48 @@ import imagehash
 import qrcode
 from io import BytesIO
 
-# baslangic
+st.set_page_config(page_title="ArtGuard AI", page_icon="🎨", layout="wide")
+
+st.markdown("""
+<style>
+    .main {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem;}
+    .stApp {background: #f8f9fa;}
+    h1 {text-align: center; color: #2c3e50; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);}
+    h2 {color: #34495e; border-bottom: 3px solid #3498db; padding-bottom: 10px;}
+    .stButton>button {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 25px;
+        padding: 0.6rem 2rem;
+        font-weight: bold;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+    .stButton>button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    [data-testid="stMetricValue"] {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    .stExpander {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin: 10px 0;
+    }
+    .uploadedFile {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+</style>
+""", unsafe_allow_html=True)
+
 if 'zincir' not in st.session_state:
     st.session_state.zincir = []
 if 'hashler' not in st.session_state:
@@ -19,163 +60,110 @@ if 'ai_sayac' not in st.session_state:
 if 'transfer_sayac' not in st.session_state:
     st.session_state.transfer_sayac = 0
 
-# dil secimi
-secilen_dil = st.sidebar.selectbox("🌍 Dil / Language", ["Türkçe", "English"])
+with st.sidebar:
+    st.markdown("## 🎨 ArtGuard AI")
+    st.markdown("---")
+    secilen_dil = st.selectbox("🌍 Dil", ["Türkçe", "English"])
+    st.markdown("---")
+    st.info("💡 Blockchain + AI ile dijital sanat koruması")
 
-# sozluk
 sozluk = {
     'Türkçe': {
-        'baslik': "Dijital Sanat Koruma - Blockchain + AI",
-        'altbaslik': "TÜBİTAK 4006 Projesi",
-        'istatistik_baslik': "📊 İstatistikler",
-        'eser_sayisi': "Eserler",
-        'kullanici_sayisi': "Kullanıcı",
-        'ai_uyari_sayisi': "AI Uyarı",
-        'transfer_sayisi': "Transfer",
-        'dosya_yukle': "Dosya yükle (jpg, png, pdf, mp3...)",
-        'hash_kisa': "Hash:",
-        'hash_uzun': "Tam Hash:",
-        'kopya_var': "🚨 KOPYA! Bu dosya kayıtlı",
-        'kopya_mesaj': "Bu eser blockchain'de var!",
-        'kayitli_kisi': "Sahibi:",
-        'eser_ismi': "Eser:",
-        'yeni_eser_mesaj': "✅ Yeni eser! Ekle",
-        'benzer_resim': "⚠️ AI UYARI: Benzer resim bulundu!",
-        'benzerlik_orani': "Benzerlik:",
-        'calmis_olabilir': "Çalıntı olabilir!",
-        'kayit_baslik': "🎨 Blockchain'e Ekle",
-        'eser_adi_gir': "Eser Adı:",
-        'sahip_adi_gir': "Sahibi:",
-        'telif_metni': "Telif Yazısı:",
-        'telif_varsayilan': "Kopyalama yasak. Tüm haklar saklı.",
-        'kaydet_buton': "🔗 KAYDET",
-        'kayit_tamam': "✅ Tamam! Blok #",
-        'sertifika_mesaj': "🎫 Sertifika hazır:",
-        'sertifika_indir': "📥 İndir",
-        'bos_alan_uyari': "Eser adı ve sahip yaz!",
-        'kayitlar_baslik': "📊 Kayıtlar",
-        'toplam_blok': "Toplam:",
-        'blok_no': "Blok #",
-        'sahibi': "Sahibi:",
-        'tarih_saat': "Tarih:",
-        'hash_bilgi': "Hash:",
-        'telif_yuzdesi': "Telif:",
-        'telif_hakki': "Telif Hakkı:",
-        'kayit_yok': "Henüz kayıt yok!",
-        'transfer_baslik': "🔄 Transfer",
-        'hangi_blok': "Blok No:",
-        'yeni_sahip_adi': "Yeni Sahip:",
-        'transfer_et_buton': "Transfer Et",
-        'transfer_basarili': "✅ Tamam! %10 telif:",
-        'transfer_yapildi': "Blok # transfer edildi:",
-        'sahip_yaz': "Yeni sahip yaz!",
-        'kaydet_yukle_baslik': "💾 Kaydet/Yükle",
-        'json_kaydet': "JSON'a Kaydet",
-        'json_indir': "İndir",
-        'json_yukle': "JSON Yükle",
-        'yukleme_basarili': "✅ Yüklendi!",
-        'yukleme_hatasi': "Hata!",
-        'alt_not': "⚠️ **Not:** Kopyalamayı engellemez ama sahipliği kanıtlar. TÜBİTAK 4006."
+        'baslik': "🎨 ArtGuard AI - Dijital Sanat Koruma Sistemi",
+        'altbaslik': "TÜBİTAK 4006 | Blockchain + Yapay Zeka",
+        'istatistik': "📊 Anlık İstatistikler",
+        'eser': "Eserler", 'kullanici': "Kullanıcı", 'ai': "AI Uyarı", 'transfer': "Transfer",
+        'yukle': "📤 Eser Yükle", 'dosya': "Dosya seç (jpg, png, pdf, mp3...)",
+        'hash': "🔐 Hash:", 'tam_hash': "📋 Tam Hash:",
+        'kopya': "🚨 KOPYA TESPİT!", 'kopya_msg': "Bu eser kayıtlı!",
+        'sahip': "Sahibi:", 'eser_adi': "Eser:",
+        'yeni': "✅ Yeni Eser", 'yeni_msg': "Blockchain'e eklenebilir!",
+        'ai_uyari': "⚠️ AI: Benzer resim bulundu!",
+        'benzerlik': "Benzerlik:", 'calmis': "Çalıntı olabilir!",
+        'kayit': "🎨 Kayıt", 'eser_input': "Eser Adı:",
+        'sahip_input': "Sahibi:", 'telif': "Telif:",
+        'telif_default': "Kopyalama yasak. Tüm haklar saklı.",
+        'kaydet': "🔗 KAYDET", 'tamam': "✅ Kaydedildi! Blok #",
+        'sertifika': "🎫 Sertifika:", 'indir': "📥 İndir",
+        'doldur': "Boş alan bırakma!", 'kayitlar': "📊 Kayıtlar",
+        'toplam': "Toplam:", 'blok': "Blok #", 'tarih': "Tarih:",
+        'yuzde': "Telif:", 'telif_hakki': "Telif Hakkı:",
+        'yok': "Henüz kayıt yok!", 'transfer_baslik': "🔄 Transfer",
+        'hangi': "Blok No:", 'yeni_sahip': "Yeni Sahip:",
+        'transfer_btn': "Transfer Et", 'transfer_ok': "✅ Tamam! %10 telif:",
+        'transfer_msg': "Transfer edildi:", 'yaz': "Sahip adı yaz!",
+        'kaydet_yukle': "💾 Kaydet/Yükle", 'json_kaydet': "Kaydet",
+        'json_indir': "İndir", 'json_yukle': "Yükle",
+        'yuklendi': "✅ Yüklendi!", 'hata': "❌ Hata!",
+        'not': "⚠️ Kopyalamayı engellemez, sahipliği kanıtlar. TÜBİTAK 4006."
     },
     'English': {
-        'baslik': "Digital Art Protection - Blockchain + AI",
-        'altbaslik': "TÜBİTAK 4006 Project",
-        'istatistik_baslik': "📊 Statistics",
-        'eser_sayisi': "Artworks",
-        'kullanici_sayisi': "Users",
-        'ai_uyari_sayisi': "AI Warnings",
-        'transfer_sayisi': "Transfers",
-        'dosya_yukle': "Upload file (jpg, png, pdf, mp3...)",
-        'hash_kisa': "Hash:",
-        'hash_uzun': "Full Hash:",
-        'kopya_var': "🚨 COPY! File registered",
-        'kopya_mesaj': "This art is on blockchain!",
-        'kayitli_kisi': "Owner:",
-        'eser_ismi': "Art:",
-        'yeni_eser_mesaj': "✅ New art! Add it",
-        'benzer_resim': "⚠️ AI WARNING: Similar image!",
-        'benzerlik_orani': "Similarity:",
-        'calmis_olabilir': "Maybe stolen!",
-        'kayit_baslik': "🎨 Add to Blockchain",
-        'eser_adi_gir': "Art Name:",
-        'sahip_adi_gir': "Owner:",
-        'telif_metni': "Copyright Text:",
-        'telif_varsayilan': "Copying not allowed. All rights reserved.",
-        'kaydet_buton': "🔗 SAVE",
-        'kayit_tamam': "✅ Done! Block #",
-        'sertifika_mesaj': "🎫 Certificate ready:",
-        'sertifika_indir': "📥 Download",
-        'bos_alan_uyari': "Write art name and owner!",
-        'kayitlar_baslik': "📊 Records",
-        'toplam_blok': "Total:",
-        'blok_no': "Block #",
-        'sahibi': "Owner:",
-        'tarih_saat': "Date:",
-        'hash_bilgi': "Hash:",
-        'telif_yuzdesi': "Royalty:",
-        'telif_hakki': "Copyright:",
-        'kayit_yok': "No records yet!",
-        'transfer_baslik': "🔄 Transfer",
-        'hangi_blok': "Block No:",
-        'yeni_sahip_adi': "New Owner:",
-        'transfer_et_buton': "Transfer",
-        'transfer_basarili': "✅ Done! 10% royalty:",
-        'transfer_yapildi': "Block # transferred:",
-        'sahip_yaz': "Write new owner!",
-        'kaydet_yukle_baslik': "💾 Save/Load",
-        'json_kaydet': "Save JSON",
-        'json_indir': "Download",
-        'json_yukle': "Load JSON",
-        'yukleme_basarili': "✅ Loaded!",
-        'yukleme_hatasi': "Error!",
-        'alt_not': "⚠️ **Note:** Doesn't stop copying but proves ownership. TÜBİTAK 4006."
+        'baslik': "🎨 ArtGuard AI - Digital Art Protection",
+        'altbaslik': "TÜBİTAK 4006 | Blockchain + AI",
+        'istatistik': "📊 Live Stats",
+        'eser': "Artworks", 'kullanici': "Users", 'ai': "AI Alerts", 'transfer': "Transfers",
+        'yukle': "📤 Upload Art", 'dosya': "Choose file (jpg, png, pdf, mp3...)",
+        'hash': "🔐 Hash:", 'tam_hash': "📋 Full Hash:",
+        'kopya': "🚨 COPY DETECTED!", 'kopya_msg': "This art is registered!",
+        'sahip': "Owner:", 'eser_adi': "Art:",
+        'yeni': "✅ New Art", 'yeni_msg': "Can be added to blockchain!",
+        'ai_uyari': "⚠️ AI: Similar image found!",
+        'benzerlik': "Similarity:", 'calmis': "Maybe stolen!",
+        'kayit': "🎨 Register", 'eser_input': "Art Name:",
+        'sahip_input': "Owner:", 'telif': "Copyright:",
+        'telif_default': "Copying not allowed. All rights reserved.",
+        'kaydet': "🔗 SAVE", 'tamam': "✅ Saved! Block #",
+        'sertifika': "🎫 Certificate:", 'indir': "📥 Download",
+        'doldur': "Fill all fields!", 'kayitlar': "📊 Records",
+        'toplam': "Total:", 'blok': "Block #", 'tarih': "Date:",
+        'yuzde': "Royalty:", 'telif_hakki': "Copyright:",
+        'yok': "No records yet!", 'transfer_baslik': "🔄 Transfer",
+        'hangi': "Block No:", 'yeni_sahip': "New Owner:",
+        'transfer_btn': "Transfer", 'transfer_ok': "✅ Done! 10% royalty:",
+        'transfer_msg': "Transferred:", 'yaz': "Enter owner!",
+        'kaydet_yukle': "💾 Save/Load", 'json_kaydet': "Save",
+        'json_indir': "Download", 'json_yukle': "Load",
+        'yuklendi': "✅ Loaded!", 'hata': "❌ Error!",
+        'not': "⚠️ Doesn't stop copying, proves ownership. TÜBİTAK 4006."
     }
 }
 
-yazi = sozluk[secilen_dil]
+t = sozluk[secilen_dil]
 
-# sayfa
-st.title(yazi['baslik'])
-st.subheader(yazi['altbaslik'])
+st.markdown(f"<h1>{t['baslik']}</h1>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align:center;color:#7f8c8d;font-size:1.1rem;'>{t['altbaslik']}</p>", unsafe_allow_html=True)
 
-# istatistikler
 st.markdown("---")
-st.subheader(yazi['istatistik_baslik'])
+st.subheader(t['istatistik'])
 
-kolon1, kolon2, kolon3, kolon4 = st.columns(4)
+k1, k2, k3, k4 = st.columns(4)
+kullanici_sayisi = len(set([i['owner'] for i in st.session_state.zincir])) if st.session_state.zincir else 0
 
-kullanici_sayisi = len(set([item['owner'] for item in st.session_state.zincir])) if st.session_state.zincir else 0
-
-with kolon1:
-    st.metric(yazi['eser_sayisi'], len(st.session_state.zincir))
-with kolon2:
-    st.metric(yazi['kullanici_sayisi'], kullanici_sayisi)
-with kolon3:
-    st.metric(yazi['ai_uyari_sayisi'], st.session_state.ai_sayac)
-with kolon4:
-    st.metric(yazi['transfer_sayisi'], st.session_state.transfer_sayac)
+with k1:
+    st.metric(t['eser'], len(st.session_state.zincir), delta=None, delta_color="off")
+with k2:
+    st.metric(t['kullanici'], kullanici_sayisi, delta=None, delta_color="off")
+with k3:
+    st.metric(t['ai'], st.session_state.ai_sayac, delta=None, delta_color="off")
+with k4:
+    st.metric(t['transfer'], st.session_state.transfer_sayac, delta=None, delta_color="off")
 
 st.markdown("---")
 
-# hash hesaplama
 def hash_hesapla(dosya_bytes):
     return hashlib.sha256(dosya_bytes).hexdigest()
 
-# resim hash
 def resim_hash_hesapla(resim):
     try:
         return imagehash.average_hash(resim)
     except:
         return None
 
-# benzerlik kontrolu
 def benzerlik_kontrol(yeni_hash):
     if yeni_hash is None:
         return None, 0
-    
     en_yuksek = 0
     index = -1
-    
     for i, eski_hash in enumerate(st.session_state.resim_hashler):
         if eski_hash is None:
             continue
@@ -184,81 +172,70 @@ def benzerlik_kontrol(yeni_hash):
         if benzerlik > en_yuksek:
             en_yuksek = benzerlik
             index = i
-    
     return index, en_yuksek
 
-# sertifika olustur
-def sertifika_yap(blok_bilgisi, hangi_dil):
-    genislik = 800
-    yukseklik = 600
-    resim = Image.new('RGB', (genislik, yukseklik), color='white')
-    cizim = ImageDraw.Draw(resim)
+def sertifika_yap(blok, dil):
+    w, h = 800, 600
+    img = Image.new('RGB', (w, h), 'white')
+    d = ImageDraw.Draw(img)
+    c = (41, 128, 185)
+    d.rectangle([10, 10, w-10, h-10], outline=c, width=5)
+    d.rectangle([20, 20, w-20, h-20], outline=c, width=2)
     
-    # cerceve
-    renk = (41, 128, 185)
-    cizim.rectangle([10, 10, genislik-10, yukseklik-10], outline=renk, width=5)
-    cizim.rectangle([20, 20, genislik-20, yukseklik-20], outline=renk, width=2)
-    
-    # qr kod
-    qr_veri = f"Block#{blok_bilgisi['index']}|Hash:{blok_bilgisi['file_hash'][:16]}|Owner:{blok_bilgisi['owner']}"
+    qr_veri = f"Block#{blok['index']}|Hash:{blok['file_hash'][:16]}|Owner:{blok['owner']}"
     qr = qrcode.QRCode(version=1, box_size=5, border=2)
     qr.add_data(qr_veri)
     qr.make(fit=True)
-    qr_resim = qr.make_image(fill_color="black", back_color="white")
-    qr_resim = qr_resim.resize((150, 150))
-    resim.paste(qr_resim, (genislik - 180, 30))
+    qr_img = qr.make_image(fill_color="black", back_color="white").resize((150, 150))
+    img.paste(qr_img, (w - 180, 30))
     
-    # yazilar
     y = 60
-    
-    baslik_txt = "BLOCKCHAIN CERTIFICATE" if hangi_dil == 'English' else "BLOCKCHAIN SERTİFİKASI"
-    cizim.text((genislik//2 - 150, y), baslik_txt, fill=renk)
+    baslik = "BLOCKCHAIN CERTIFICATE" if dil == 'English' else "BLOCKCHAIN SERTİFİKASI"
+    d.text((w//2 - 150, y), baslik, fill=c)
     y += 60
-    
-    cizim.text((50, y), f"{sozluk[hangi_dil]['eser_ismi']} {blok_bilgisi['art_name']}", fill='black')
+    d.text((50, y), f"{sozluk[dil]['eser_adi']} {blok['art_name']}", fill='black')
     y += 40
-    cizim.text((50, y), f"{sozluk[hangi_dil]['sahibi']} {blok_bilgisi['owner']}", fill='black')
+    d.text((50, y), f"{sozluk[dil]['sahip']} {blok['owner']}", fill='black')
     y += 40
-    cizim.text((50, y), f"{sozluk[hangi_dil]['blok_no']}{blok_bilgisi['index']}", fill='black')
+    d.text((50, y), f"{sozluk[dil]['blok']}{blok['index']}", fill='black')
     y += 40
-    cizim.text((50, y), f"{sozluk[hangi_dil]['tarih_saat']}", fill='black')
+    d.text((50, y), f"{sozluk[dil]['tarih']}", fill='black')
     y += 25
-    cizim.text((50, y), f"{blok_bilgisi['timestamp'][:19]}", fill='gray')
+    d.text((50, y), f"{blok['timestamp'][:19]}", fill='gray')
     y += 40
-    cizim.text((50, y), f"{sozluk[hangi_dil]['hash_bilgi']}", fill='black')
+    d.text((50, y), f"Hash:", fill='black')
     y += 25
-    cizim.text((50, y), f"{blok_bilgisi['file_hash'][:32]}...", fill='gray')
+    d.text((50, y), f"{blok['file_hash'][:32]}...", fill='gray')
     y += 50
-    cizim.text((50, y), blok_bilgisi['copyright_statement'][:60], fill='darkred')
-    
-    alt_yazi = "Verified on ArtGuard AI Blockchain" if hangi_dil == 'English' else "ArtGuard AI Blockchain'de Doğrulandı"
-    cizim.text((genislik//2 - 120, yukseklik - 50), alt_yazi, fill='gray')
-    
-    return resim
+    d.text((50, y), blok['copyright_statement'][:60], fill='darkred')
+    alt = "Verified on ArtGuard AI" if dil == 'English' else "ArtGuard AI'de Doğrulandı"
+    d.text((w//2 - 120, h - 50), alt, fill='gray')
+    return img
 
-# dosya yukleme
-yuklenen = st.file_uploader(yazi['dosya_yukle'], type=['jpg', 'jpeg', 'png', 'pdf', 'mp3', 'wav', 'txt'])
+st.subheader(t['yukle'])
+yuklenen = st.file_uploader(t['dosya'], type=['jpg', 'jpeg', 'png', 'pdf', 'mp3', 'wav', 'txt'])
 
 if yuklenen:
     dosya_bytes = yuklenen.read()
     dosya_hash = hash_hesapla(dosya_bytes)
-    kisa_hash = dosya_hash[:16] + "..."
+    kisa = dosya_hash[:16] + "..."
     
-    st.write(f"**{yazi['hash_kisa']}** `{kisa_hash}`")
-    st.write(f"**{yazi['hash_uzun']}** `{dosya_hash}`")
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.code(f"{t['hash']} {kisa}")
+    with col_b:
+        st.code(f"{t['tam_hash']} {dosya_hash}")
     
-    # kayitli mi kontrol
     if dosya_hash in st.session_state.hashler:
-        st.error(yazi['kopya_var'])
-        st.warning(yazi['kopya_mesaj'])
-        
+        st.error(t['kopya'])
+        st.warning(t['kopya_msg'])
         for item in st.session_state.zincir:
             if item['file_hash'] == dosya_hash:
-                st.info(f"**{yazi['kayitli_kisi']}** {item['owner']} | **{yazi['eser_ismi']}** {item['art_name']}")
+                st.info(f"**{t['sahip']}** {item['owner']} | **{t['eser_adi']}** {item['art_name']}")
     else:
-        st.success(yazi['yeni_eser_mesaj'])
+        st.success(t['yeni'])
+        st.info(t['yeni_msg'])
         
-        # resim kontrolu
         resim_hash_degeri = None
         
         if yuklenen.type.startswith('image'):
@@ -270,21 +247,24 @@ if yuklenen:
                     benzer_index, skor = benzerlik_kontrol(resim_hash_degeri)
                     if skor > 80:
                         st.session_state.ai_sayac += 1
-                        st.warning(yazi['benzer_resim'])
-                        st.warning(f"**{yazi['benzerlik_orani']}** {skor:.1f}% ({yazi['blok_no']} {benzer_index})")
-                        st.warning(yazi['calmis_olabilir'])
+                        st.warning(t['ai_uyari'])
+                        st.warning(f"**{t['benzerlik']}** {skor:.1f}% ({t['blok']} {benzer_index})")
+                        st.warning(t['calmis'])
             except:
                 pass
         
-        # kayit formu
         st.markdown("---")
-        st.subheader(yazi['kayit_baslik'])
+        st.subheader(t['kayit'])
         
-        eser_adi = st.text_input(yazi['eser_adi_gir'], "")
-        sahip_adi = st.text_input(yazi['sahip_adi_gir'], "")
-        telif_yazisi = st.text_area(yazi['telif_metni'], yazi['telif_varsayilan'])
+        col1, col2 = st.columns(2)
+        with col1:
+            eser_adi = st.text_input(t['eser_input'])
+        with col2:
+            sahip_adi = st.text_input(t['sahip_input'])
         
-        if st.button(yazi['kaydet_buton']):
+        telif_yazisi = st.text_area(t['telif'], t['telif_default'], height=100)
+        
+        if st.button(t['kaydet'], use_container_width=True):
             if eser_adi and sahip_adi:
                 yeni_blok = {
                     'index': len(st.session_state.zincir),
@@ -300,86 +280,79 @@ if yuklenen:
                 st.session_state.hashler.add(dosya_hash)
                 st.session_state.resim_hashler.append(resim_hash_degeri)
                 
-                st.success(f"{yazi['kayit_tamam']}{yeni_blok['index']}")
+                st.success(f"{t['tamam']}{yeni_blok['index']}")
                 st.balloons()
                 
-                # sertifika
-                st.info(yazi['sertifika_mesaj'])
+                st.info(t['sertifika'])
                 sertifika_resmi = sertifika_yap(yeni_blok, secilen_dil)
                 
                 buffer = BytesIO()
                 sertifika_resmi.save(buffer, format='PNG')
                 buffer.seek(0)
                 
-                st.download_button(
-                    label=yazi['sertifika_indir'],
-                    data=buffer,
-                    file_name=f"certificate_block_{yeni_blok['index']}.png",
-                    mime="image/png"
-                )
-                
-                st.image(sertifika_resmi, caption=f"Certificate - Block #{yeni_blok['index']}", use_container_width=True)
-                
+                col_x, col_y = st.columns([1, 3])
+                with col_x:
+                    st.download_button(t['indir'], buffer, f"cert_{yeni_blok['index']}.png", "image/png", use_container_width=True)
+                with col_y:
+                    st.image(sertifika_resmi, use_container_width=True)
             else:
-                st.error(yazi['bos_alan_uyari'])
+                st.error(t['doldur'])
 
-# kayitlari goster
 st.markdown("---")
-st.header(yazi['kayitlar_baslik'])
+st.header(t['kayitlar'])
 
 if len(st.session_state.zincir) > 0:
-    st.write(f"**{yazi['toplam_blok']}** {len(st.session_state.zincir)}")
+    st.write(f"**{t['toplam']}** {len(st.session_state.zincir)}")
     
     for item in st.session_state.zincir:
-        with st.expander(f"{yazi['blok_no']}{item['index']} - {item['art_name']}"):
-            st.write(f"**{yazi['sahibi']}** {item['owner']}")
-            st.write(f"**{yazi['tarih_saat']}** {item['timestamp']}")
-            st.write(f"**{yazi['hash_bilgi']}** `{item['file_hash'][:20]}...`")
-            st.write(f"**{yazi['telif_yuzdesi']}** {item['royalty']*100}%")
-            st.write(f"**{yazi['telif_hakki']}** {item['copyright_statement']}")
+        with st.expander(f"🎨 {t['blok']}{item['index']} - {item['art_name']}"):
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write(f"**{t['sahip']}** {item['owner']}")
+                st.write(f"**{t['tarih']}** {item['timestamp'][:19]}")
+            with col2:
+                st.write(f"**Hash:** `{item['file_hash'][:20]}...`")
+                st.write(f"**{t['yuzde']}** {item['royalty']*100}%")
+            st.write(f"**{t['telif_hakki']}** {item['copyright_statement']}")
 else:
-    st.info(yazi['kayit_yok'])
+    st.info(t['yok'])
 
-# transfer
 st.markdown("---")
-st.header(yazi['transfer_baslik'])
+st.header(t['transfer_baslik'])
 
 if len(st.session_state.zincir) > 0:
-    secilen_blok = st.number_input(yazi['hangi_blok'], min_value=0, 
-                                max_value=len(st.session_state.zincir)-1, value=0)
-    yeni_sahip = st.text_input(yazi['yeni_sahip_adi'], "")
-    
-    if st.button(yazi['transfer_et_buton']):
-        if yeni_sahip:
-            eski_sahip = st.session_state.zincir[secilen_blok]['owner']
-            st.session_state.zincir[secilen_blok]['owner'] = yeni_sahip
-            st.session_state.transfer_sayac += 1
-            st.success(f"{yazi['transfer_basarili']} {eski_sahip}")
-            st.info(f"{yazi['transfer_yapildi'].replace('#', f'#{secilen_blok}')} {yeni_sahip}")
-            
-            # yeni sertifika
-            sertifika_resmi = sertifika_yap(st.session_state.zincir[secilen_blok], secilen_dil)
-            buffer = BytesIO()
-            sertifika_resmi.save(buffer, format='PNG')
-            buffer.seek(0)
-            
-            st.download_button(
-                label=yazi['sertifika_indir'],
-                data=buffer,
-                file_name=f"certificate_transferred_block_{secilen_blok}.png",
-                mime="image/png"
-            )
-        else:
-            st.error(yazi['sahip_yaz'])
+    col1, col2, col3 = st.columns([2, 2, 1])
+    with col1:
+        secilen_blok = st.number_input(t['hangi'], 0, len(st.session_state.zincir)-1, 0)
+    with col2:
+        yeni_sahip = st.text_input(t['yeni_sahip'])
+    with col3:
+        st.write("")
+        st.write("")
+        if st.button(t['transfer_btn'], use_container_width=True):
+            if yeni_sahip:
+                eski = st.session_state.zincir[secilen_blok]['owner']
+                st.session_state.zincir[secilen_blok]['owner'] = yeni_sahip
+                st.session_state.transfer_sayac += 1
+                st.success(f"{t['transfer_ok']} {eski}")
+                st.info(f"{t['transfer_msg']} {yeni_sahip}")
+                
+                sertifika_resmi = sertifika_yap(st.session_state.zincir[secilen_blok], secilen_dil)
+                buffer = BytesIO()
+                sertifika_resmi.save(buffer, format='PNG')
+                buffer.seek(0)
+                st.download_button(t['indir'], buffer, f"transfer_{secilen_blok}.png", "image/png")
+            else:
+                st.error(t['yaz'])
 
-# kaydet yukle
 st.markdown("---")
-st.header(yazi['kaydet_yukle_baslik'])
+st.header(t['kaydet_yukle'])
 
-sol, sag = st.columns(2)
+col1, col2 = st.columns(2)
 
-with sol:
-    if st.button(yazi['json_kaydet']):
+with col1:
+    st.subheader("💾 " + t['json_kaydet'])
+    if st.button(t['json_kaydet'], use_container_width=True):
         veri = {
             'blockchain': st.session_state.zincir,
             'used_hashes': list(st.session_state.hashler),
@@ -387,26 +360,26 @@ with sol:
             'ai_warnings_count': st.session_state.ai_sayac,
             'transfers_count': st.session_state.transfer_sayac
         }
-        
         json_veri = json.dumps(veri, indent=2, ensure_ascii=False)
-        st.download_button(yazi['json_indir'], json_veri, "blockchain.json", "application/json")
+        st.download_button(t['json_indir'], json_veri, "blockchain.json", "application/json", use_container_width=True)
 
-with sag:
-    json_dosyasi = st.file_uploader(yazi['json_yukle'], type=['json'])
+with col2:
+    st.subheader("📂 " + t['json_yukle'])
+    json_dosyasi = st.file_uploader(t['json_yukle'], type=['json'])
     if json_dosyasi:
         try:
             veri = json.load(json_dosyasi)
             st.session_state.zincir = veri['blockchain']
             st.session_state.hashler = set(veri['used_hashes'])
-            st.session_state.resim_hashler = [imagehash.hex_to_hash(h) if h else None 
-                                           for h in veri['phash_list']]
+            st.session_state.resim_hashler = [imagehash.hex_to_hash(h) if h else None for h in veri['phash_list']]
             st.session_state.ai_sayac = veri.get('ai_warnings_count', 0)
             st.session_state.transfer_sayac = veri.get('transfers_count', 0)
-            st.success(yazi['yukleme_basarili'])
+            st.success(t['yuklendi'])
             st.rerun()
         except:
-            st.error(yazi['yukleme_hatasi'])
+            st.error(t['hata'])
 
-# alt not
 st.markdown("---")
-st.info(yazi['alt_not'])
+st.info(t['not'])
+
+st.markdown("<p style='text-align:center;color:#95a5a6;margin-top:2rem;'>Made with ❤️ for TÜBİTAK 4006</p>", unsafe_allow_html=True)
