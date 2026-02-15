@@ -10,145 +10,32 @@ from io import BytesIO
 st.set_page_config(page_title="ArtGuard AI", page_icon="🎨", layout="wide")
 
 st.markdown("""
-    <style>
-    /* Genel Arka Plan */
+<style>
     .stApp {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    
-    /* Ana İçerik */
     .main .block-container {
         background: white;
         border-radius: 20px;
         padding: 2rem;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     }
-    
-    /* Başlıklar */
     h1 {
-        background: linear-gradient(120deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center;
-        font-size: 3rem !important;
-        font-weight: 800 !important;
-        margin-bottom: 0.5rem !important;
-    }
-    
-    h2 {
         color: #2c3e50;
-        border-bottom: 3px solid #667eea;
-        padding-bottom: 0.5rem;
-        margin-top: 1.5rem;
+        text-align: center;
     }
-    
-    h3 {
+    h2 {
         color: #34495e;
+        border-bottom: 2px solid #667eea;
     }
-    
-    /* Butonlar */
     .stButton > button {
-        background: linear-gradient(90deg, #667eea, #764ba2) !important;
-        color: white !important;
-        border-radius: 25px !important;
-        padding: 0.7rem 2rem !important;
-        font-weight: bold !important;
-        border: none !important;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
-        transition: all 0.3s ease !important;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 20px;
+        padding: 0.6rem 2rem;
+        border: none;
     }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
-    }
-    
-    /* Metrikler */
-    [data-testid="stMetricValue"] {
-        font-size: 2.5rem !important;
-        font-weight: bold !important;
-        color: #667eea !important;
-    }
-    
-    [data-testid="stMetricLabel"] {
-        font-size: 1rem !important;
-        color: #7f8c8d !important;
-    }
-    
-    /* Uyarı Kutuları */
-    .stSuccess {
-        background-color: #d4edda !important;
-        border-left: 5px solid #28a745 !important;
-        padding: 1rem !important;
-        border-radius: 5px !important;
-    }
-    
-    .stError {
-        background-color: #f8d7da !important;
-        border-left: 5px solid #dc3545 !important;
-        padding: 1rem !important;
-        border-radius: 5px !important;
-    }
-    
-    .stWarning {
-        background-color: #fff3cd !important;
-        border-left: 5px solid #ffc107 !important;
-        padding: 1rem !important;
-        border-radius: 5px !important;
-    }
-    
-    .stInfo {
-        background-color: #d1ecf1 !important;
-        border-left: 5px solid #17a2b8 !important;
-        padding: 1rem !important;
-        border-radius: 5px !important;
-    }
-    
-    /* Expander */
-    .streamlit-expanderHeader {
-        background-color: #f8f9fa !important;
-        border-radius: 10px !important;
-        font-weight: bold !important;
-        color: #2c3e50 !important;
-    }
-    
-    /* Sidebar */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-    }
-    
-    [data-testid="stSidebar"] > div:first-child {
-        background: transparent;
-    }
-    
-    /* Input alanları */
-    .stTextInput > div > div > input {
-        border-radius: 10px !important;
-        border: 2px solid #e0e0e0 !important;
-    }
-    
-    .stTextInput > div > div > input:focus {
-        border-color: #667eea !important;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
-    }
-    
-    /* File uploader */
-    [data-testid="stFileUploader"] {
-        background: #f8f9fa;
-        border: 2px dashed #667eea;
-        border-radius: 15px;
-        padding: 2rem;
-    }
-    
-    /* Code blocks */
-    code {
-        background: #f4f4f4 !important;
-        padding: 0.3rem 0.6rem !important;
-        border-radius: 5px !important;
-        color: #667eea !important;
-        font-weight: bold !important;
-    }
-    </style>
+</style>
 """, unsafe_allow_html=True)
 
 if 'zincir' not in st.session_state:
@@ -167,88 +54,87 @@ with st.sidebar:
     st.markdown("---")
     secilen_dil = st.selectbox("🌍 Dil", ["Türkçe", "English"])
     st.markdown("---")
-    st.info("💡 Blockchain + AI ile dijital sanat koruması")
+    st.info("💡 Blockchain + AI")
 
 sozluk = {
     'Türkçe': {
-        'baslik': "🎨 ArtGuard AI - Dijital Sanat Koruma Sistemi",
-        'altbaslik': "TÜBİTAK 4006 | Blockchain + Yapay Zeka",
-        'istatistik': "📊 Anlık İstatistikler",
+        'baslik': "🎨 ArtGuard AI - Dijital Sanat Koruma",
+        'altbaslik': "TÜBİTAK 4006 Projesi",
+        'istatistik': "📊 İstatistikler",
         'eser': "Eserler", 'kullanici': "Kullanıcı", 'ai': "AI Uyarı", 'transfer': "Transfer",
-        'yukle': "📤 Eser Yükle", 'dosya': "Dosya seç (jpg, png, pdf, mp3...)",
-        'hash': "🔐 Hash:", 'tam_hash': "📋 Tam Hash:",
-        'kopya': "🚨 KOPYA TESPİT!", 'kopya_msg': "Bu eser kayıtlı!",
+        'yukle': "📤 Dosya Yükle", 'dosya': "Dosya seç",
+        'hash': "Hash:", 'tam_hash': "Tam Hash:",
+        'kopya': "🚨 KOPYA!", 'kopya_msg': "Bu eser kayıtlı!",
         'sahip': "Sahibi:", 'eser_adi': "Eser:",
-        'yeni': "✅ Yeni Eser", 'yeni_msg': "Blockchain'e eklenebilir!",
-        'ai_uyari': "⚠️ AI: Benzer resim bulundu!",
+        'yeni': "✅ Yeni Eser", 'yeni_msg': "Blockchain'e eklenebilir",
+        'ai_uyari': "⚠️ Benzer resim bulundu!",
         'benzerlik': "Benzerlik:", 'calmis': "Çalıntı olabilir!",
         'kayit': "🎨 Kayıt", 'eser_input': "Eser Adı:",
         'sahip_input': "Sahibi:", 'telif': "Telif:",
         'telif_default': "Kopyalama yasak. Tüm haklar saklı.",
-        'kaydet': "🔗 KAYDET", 'tamam': "✅ Kaydedildi! Blok #",
-        'sertifika': "🎫 Sertifika:", 'indir': "📥 İndir",
+        'kaydet': "KAYDET", 'tamam': "✅ Kaydedildi! Blok #",
+        'sertifika': "🎫 Sertifika:", 'indir': "İndir",
         'doldur': "Boş alan bırakma!", 'kayitlar': "📊 Kayıtlar",
         'toplam': "Toplam:", 'blok': "Blok #", 'tarih': "Tarih:",
         'yuzde': "Telif:", 'telif_hakki': "Telif Hakkı:",
         'yok': "Henüz kayıt yok!", 'transfer_baslik': "🔄 Transfer",
         'hangi': "Blok No:", 'yeni_sahip': "Yeni Sahip:",
         'transfer_btn': "Transfer Et", 'transfer_ok': "✅ Tamam! %10 telif:",
-        'transfer_msg': "Transfer edildi:", 'yaz': "Sahip adı yaz!",
+        'transfer_msg': "Transfer edildi", 'yaz': "Sahip adı yaz!",
         'kaydet_yukle': "💾 Kaydet/Yükle", 'json_kaydet': "Kaydet",
         'json_indir': "İndir", 'json_yukle': "Yükle",
-        'yuklendi': "✅ Yüklendi!", 'hata': "❌ Hata!",
-        'not': "⚠️ Kopyalamayı engellemez, sahipliği kanıtlar. TÜBİTAK 4006."
+        'yuklendi': "✅ Yüklendi!", 'hata': "Hata!",
+        'not': "Kopyalamayı engellemez, sahipliği kanıtlar."
     },
     'English': {
         'baslik': "🎨 ArtGuard AI - Digital Art Protection",
-        'altbaslik': "TÜBİTAK 4006 | Blockchain + AI",
-        'istatistik': "📊 Live Stats",
+        'altbaslik': "TÜBİTAK 4006 Project",
+        'istatistik': "📊 Statistics",
         'eser': "Artworks", 'kullanici': "Users", 'ai': "AI Alerts", 'transfer': "Transfers",
-        'yukle': "📤 Upload Art", 'dosya': "Choose file (jpg, png, pdf, mp3...)",
-        'hash': "🔐 Hash:", 'tam_hash': "📋 Full Hash:",
-        'kopya': "🚨 COPY DETECTED!", 'kopya_msg': "This art is registered!",
+        'yukle': "📤 Upload", 'dosya': "Choose file",
+        'hash': "Hash:", 'tam_hash': "Full Hash:",
+        'kopya': "🚨 COPY!", 'kopya_msg': "This art is registered!",
         'sahip': "Owner:", 'eser_adi': "Art:",
-        'yeni': "✅ New Art", 'yeni_msg': "Can be added to blockchain!",
-        'ai_uyari': "⚠️ AI: Similar image found!",
+        'yeni': "✅ New Art", 'yeni_msg': "Can be added",
+        'ai_uyari': "⚠️ Similar image!",
         'benzerlik': "Similarity:", 'calmis': "Maybe stolen!",
         'kayit': "🎨 Register", 'eser_input': "Art Name:",
         'sahip_input': "Owner:", 'telif': "Copyright:",
         'telif_default': "Copying not allowed. All rights reserved.",
-        'kaydet': "🔗 SAVE", 'tamam': "✅ Saved! Block #",
-        'sertifika': "🎫 Certificate:", 'indir': "📥 Download",
+        'kaydet': "SAVE", 'tamam': "✅ Saved! Block #",
+        'sertifika': "🎫 Certificate:", 'indir': "Download",
         'doldur': "Fill all fields!", 'kayitlar': "📊 Records",
         'toplam': "Total:", 'blok': "Block #", 'tarih': "Date:",
         'yuzde': "Royalty:", 'telif_hakki': "Copyright:",
         'yok': "No records yet!", 'transfer_baslik': "🔄 Transfer",
         'hangi': "Block No:", 'yeni_sahip': "New Owner:",
         'transfer_btn': "Transfer", 'transfer_ok': "✅ Done! 10% royalty:",
-        'transfer_msg': "Transferred:", 'yaz': "Enter owner!",
+        'transfer_msg': "Transferred", 'yaz': "Enter owner!",
         'kaydet_yukle': "💾 Save/Load", 'json_kaydet': "Save",
         'json_indir': "Download", 'json_yukle': "Load",
-        'yuklendi': "✅ Loaded!", 'hata': "❌ Error!",
-        'not': "⚠️ Doesn't stop copying, proves ownership. TÜBİTAK 4006."
+        'yuklendi': "✅ Loaded!", 'hata': "Error!",
+        'not': "Doesn't stop copying, proves ownership."
     }
 }
 
 t = sozluk[secilen_dil]
 
-st.markdown(f"<h1>{t['baslik']}</h1>", unsafe_allow_html=True)
-st.markdown(f"<p style='text-align:center;color:#7f8c8d;font-size:1.1rem;'>{t['altbaslik']}</p>", unsafe_allow_html=True)
-
+st.title(t['baslik'])
+st.caption(t['altbaslik'])
 st.markdown("---")
-st.subheader(t['istatistik'])
 
+st.subheader(t['istatistik'])
 k1, k2, k3, k4 = st.columns(4)
 kullanici_sayisi = len(set([i['owner'] for i in st.session_state.zincir])) if st.session_state.zincir else 0
 
 with k1:
-    st.metric(t['eser'], len(st.session_state.zincir), delta=None, delta_color="off")
+    st.metric(t['eser'], len(st.session_state.zincir))
 with k2:
-    st.metric(t['kullanici'], kullanici_sayisi, delta=None, delta_color="off")
+    st.metric(t['kullanici'], kullanici_sayisi)
 with k3:
-    st.metric(t['ai'], st.session_state.ai_sayac, delta=None, delta_color="off")
+    st.metric(t['ai'], st.session_state.ai_sayac)
 with k4:
-    st.metric(t['transfer'], st.session_state.transfer_sayac, delta=None, delta_color="off")
+    st.metric(t['transfer'], st.session_state.transfer_sayac)
 
 st.markdown("---")
 
@@ -301,17 +187,13 @@ def sertifika_yap(blok, dil):
     y += 40
     d.text((50, y), f"{sozluk[dil]['blok']}{blok['index']}", fill='black')
     y += 40
-    d.text((50, y), f"{sozluk[dil]['tarih']}", fill='black')
-    y += 25
     d.text((50, y), f"{blok['timestamp'][:19]}", fill='gray')
     y += 40
-    d.text((50, y), f"Hash:", fill='black')
-    y += 25
-    d.text((50, y), f"{blok['file_hash'][:32]}...", fill='gray')
-    y += 50
+    d.text((50, y), f"Hash: {blok['file_hash'][:32]}...", fill='gray')
+    y += 40
     d.text((50, y), blok['copyright_statement'][:60], fill='darkred')
-    alt = "Verified on ArtGuard AI" if dil == 'English' else "ArtGuard AI'de Doğrulandı"
-    d.text((w//2 - 120, h - 50), alt, fill='gray')
+    alt = "ArtGuard AI Blockchain" if dil == 'English' else "ArtGuard AI Blockchain"
+    d.text((w//2 - 100, h - 50), alt, fill='gray')
     return img
 
 st.subheader(t['yukle'])
@@ -322,11 +204,7 @@ if yuklenen:
     dosya_hash = hash_hesapla(dosya_bytes)
     kisa = dosya_hash[:16] + "..."
     
-    col_a, col_b = st.columns(2)
-    with col_a:
-        st.code(f"{t['hash']} {kisa}")
-    with col_b:
-        st.code(f"{t['tam_hash']} {dosya_hash}")
+    st.write(f"**{t['hash']}** `{kisa}`")
     
     if dosya_hash in st.session_state.hashler:
         st.error(t['kopya'])
@@ -336,7 +214,6 @@ if yuklenen:
                 st.info(f"**{t['sahip']}** {item['owner']} | **{t['eser_adi']}** {item['art_name']}")
     else:
         st.success(t['yeni'])
-        st.info(t['yeni_msg'])
         
         resim_hash_degeri = None
         
@@ -351,7 +228,6 @@ if yuklenen:
                         st.session_state.ai_sayac += 1
                         st.warning(t['ai_uyari'])
                         st.warning(f"**{t['benzerlik']}** {skor:.1f}% ({t['blok']} {benzer_index})")
-                        st.warning(t['calmis'])
             except:
                 pass
         
@@ -364,7 +240,7 @@ if yuklenen:
         with col2:
             sahip_adi = st.text_input(t['sahip_input'])
         
-        telif_yazisi = st.text_area(t['telif'], t['telif_default'], height=100)
+        telif_yazisi = st.text_area(t['telif'], t['telif_default'], height=80)
         
         if st.button(t['kaydet'], use_container_width=True):
             if eser_adi and sahip_adi:
@@ -385,18 +261,13 @@ if yuklenen:
                 st.success(f"{t['tamam']}{yeni_blok['index']}")
                 st.balloons()
                 
-                st.info(t['sertifika'])
                 sertifika_resmi = sertifika_yap(yeni_blok, secilen_dil)
-                
                 buffer = BytesIO()
                 sertifika_resmi.save(buffer, format='PNG')
                 buffer.seek(0)
                 
-                col_x, col_y = st.columns([1, 3])
-                with col_x:
-                    st.download_button(t['indir'], buffer, f"cert_{yeni_blok['index']}.png", "image/png", use_container_width=True)
-                with col_y:
-                    st.image(sertifika_resmi, use_container_width=True)
+                st.download_button(t['indir'], buffer, f"cert_{yeni_blok['index']}.png", "image/png")
+                st.image(sertifika_resmi, use_container_width=True)
             else:
                 st.error(t['doldur'])
 
@@ -407,14 +278,11 @@ if len(st.session_state.zincir) > 0:
     st.write(f"**{t['toplam']}** {len(st.session_state.zincir)}")
     
     for item in st.session_state.zincir:
-        with st.expander(f"🎨 {t['blok']}{item['index']} - {item['art_name']}"):
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write(f"**{t['sahip']}** {item['owner']}")
-                st.write(f"**{t['tarih']}** {item['timestamp'][:19]}")
-            with col2:
-                st.write(f"**Hash:** `{item['file_hash'][:20]}...`")
-                st.write(f"**{t['yuzde']}** {item['royalty']*100}%")
+        with st.expander(f"{t['blok']}{item['index']} - {item['art_name']}"):
+            st.write(f"**{t['sahip']}** {item['owner']}")
+            st.write(f"**{t['tarih']}** {item['timestamp'][:19]}")
+            st.write(f"**Hash:** `{item['file_hash'][:20]}...`")
+            st.write(f"**{t['yuzde']}** {item['royalty']*100}%")
             st.write(f"**{t['telif_hakki']}** {item['copyright_statement']}")
 else:
     st.info(t['yok'])
@@ -423,29 +291,26 @@ st.markdown("---")
 st.header(t['transfer_baslik'])
 
 if len(st.session_state.zincir) > 0:
-    col1, col2, col3 = st.columns([2, 2, 1])
+    col1, col2 = st.columns([2, 2])
     with col1:
         secilen_blok = st.number_input(t['hangi'], 0, len(st.session_state.zincir)-1, 0)
     with col2:
         yeni_sahip = st.text_input(t['yeni_sahip'])
-    with col3:
-        st.write("")
-        st.write("")
-        if st.button(t['transfer_btn'], use_container_width=True):
-            if yeni_sahip:
-                eski = st.session_state.zincir[secilen_blok]['owner']
-                st.session_state.zincir[secilen_blok]['owner'] = yeni_sahip
-                st.session_state.transfer_sayac += 1
-                st.success(f"{t['transfer_ok']} {eski}")
-                st.info(f"{t['transfer_msg']} {yeni_sahip}")
-                
-                sertifika_resmi = sertifika_yap(st.session_state.zincir[secilen_blok], secilen_dil)
-                buffer = BytesIO()
-                sertifika_resmi.save(buffer, format='PNG')
-                buffer.seek(0)
-                st.download_button(t['indir'], buffer, f"transfer_{secilen_blok}.png", "image/png")
-            else:
-                st.error(t['yaz'])
+    
+    if st.button(t['transfer_btn']):
+        if yeni_sahip:
+            eski = st.session_state.zincir[secilen_blok]['owner']
+            st.session_state.zincir[secilen_blok]['owner'] = yeni_sahip
+            st.session_state.transfer_sayac += 1
+            st.success(f"{t['transfer_ok']} {eski}")
+            
+            sertifika_resmi = sertifika_yap(st.session_state.zincir[secilen_blok], secilen_dil)
+            buffer = BytesIO()
+            sertifika_resmi.save(buffer, format='PNG')
+            buffer.seek(0)
+            st.download_button(t['indir'], buffer, f"transfer_{secilen_blok}.png", "image/png")
+        else:
+            st.error(t['yaz'])
 
 st.markdown("---")
 st.header(t['kaydet_yukle'])
@@ -453,8 +318,7 @@ st.header(t['kaydet_yukle'])
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("💾 " + t['json_kaydet'])
-    if st.button(t['json_kaydet'], use_container_width=True):
+    if st.button(t['json_kaydet']):
         veri = {
             'blockchain': st.session_state.zincir,
             'used_hashes': list(st.session_state.hashler),
@@ -463,10 +327,9 @@ with col1:
             'transfers_count': st.session_state.transfer_sayac
         }
         json_veri = json.dumps(veri, indent=2, ensure_ascii=False)
-        st.download_button(t['json_indir'], json_veri, "blockchain.json", "application/json", use_container_width=True)
+        st.download_button(t['json_indir'], json_veri, "blockchain.json", "application/json")
 
 with col2:
-    st.subheader("📂 " + t['json_yukle'])
     json_dosyasi = st.file_uploader(t['json_yukle'], type=['json'])
     if json_dosyasi:
         try:
@@ -483,5 +346,3 @@ with col2:
 
 st.markdown("---")
 st.info(t['not'])
-
-st.markdown("<p style='text-align:center;color:#95a5a6;margin-top:2rem;'>Made for TÜBİTAK 4006</p>", unsafe_allow_html=True)
