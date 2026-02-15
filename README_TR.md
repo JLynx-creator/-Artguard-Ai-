@@ -97,7 +97,6 @@ Sorularınız için: +90 5301525021 - +90 505 806 14 17 / yyagizgunay@gmail.com-
 
 Bu eğitim projesidir, ancak önerileriniz için Issues bölümünü kullanabilirsiniz!
 
-## ⚡ Hızlı Linkler
+## ⚡ Hızlı Link
 
-- [Streamlit Cloud'a Deploy Rehberi](DEPLOY_REHBERI.md)
 - [Proje Raporu](#) *(ekle)*
