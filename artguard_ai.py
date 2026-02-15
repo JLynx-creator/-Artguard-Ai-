@@ -25,7 +25,7 @@ with st.sidebar:
     st.markdown("---")
     secilen_dil = st.selectbox("🌍 Dil", ["Türkçe", "English"])
     st.markdown("---")
-    tema = st.selectbox("🎨 Tema", ["Mor-Mavi", "Turuncu-Kırmızı", "Yeşil-Mavi", "Pembe-Mor", "Koyu Mod", "Altın-Sarı", "Gümüş-Şehir", "Deniz-Mavin", "Gün Batımı", "Orman-Yeşil", "Lacivert-Gümüş", "Mercan-Turkuaz", "Eflatun-Gri", "Ateş-Kırmızı", "Buz-Mavi"])
+    tema = st.selectbox("🎨 Tema", ["Mor-Mavi", "Turuncu-Kırmızı", "Yeşil-Mavi", "Pembe-Mor", "Koyu Mod"])
     st.markdown("---")
     st.info("💡 Blockchain + AI")
 
@@ -34,17 +34,7 @@ temalar = {
     "Turuncu-Kırmızı": {'g1': '#f46b45', 'g2': '#eea849'},
     "Yeşil-Mavi": {'g1': '#11998e', 'g2': '#38ef7d'},
     "Pembe-Mor": {'g1': '#ee0979', 'g2': '#ff6a00'},
-    "Koyu Mod": {'g1': '#2c3e50', 'g2': '#34495e'},
-    "Altın-Sarı": {'g1': '#f7971e', 'g2': '#ffd200'},
-    "Gümüş-Şehir": {'g1': '#bdc3c7', 'g2': '#2c3e50'},
-    "Deniz-Mavin": {'g1': '#2193b0', 'g2': '#6dd5ed'},
-    "Gün Batımı": {'g1': '#ff6b6b', 'g2': '#feca57'},
-    "Orman-Yeşil": {'g1': '#134e5e', 'g2': '#71b280'},
-    "Lacivert-Gümüş": {'g1': '#4b6cb7', 'g2': '#182848'},
-    "Mercan-Turkuaz": {'g1': '#ff6b9d', 'g2': '#c44569'},
-    "Eflatun-Gri": {'g1': '#8e44ad', 'g2': '#95a5a6'},
-    "Ateş-Kırmızı": {'g1': '#ff416c', 'g2': '#ff4b2b'},
-    "Buz-Mavi": {'g1': '#4facfe', 'g2': '#00f2fe'}
+    "Koyu Mod": {'g1': '#2c3e50', 'g2': '#34495e'}
 }
 
 t_renk = temalar[tema]
@@ -52,7 +42,7 @@ t_renk = temalar[tema]
 st.markdown(f"""
 <style>
     .stApp {{
-        background: linear-gradient(135deg, {t_renk['g1']} 50%, {t_renk['g2']} 50%);
+        background: linear-gradient(135deg, {t_renk['g1']} 0%, {t_renk['g2']} 100%);
     }}
     .main .block-container {{
         background: white;
@@ -248,10 +238,24 @@ if yuklenen:
                 
                 if len(st.session_state.resim_hashler) > 0:
                     benzer_index, skor = benzerlik_kontrol(resim_hash_degeri)
-                    if skor > 80:
+                    
+                    if skor > 95:
                         st.session_state.ai_sayac += 1
-                        st.warning(t['ai_uyari'])
-                        st.warning(f"**{t['benzerlik']}** {skor:.1f}% ({t['blok']} {benzer_index})")
+                        st.error(f"🚨 **ÇOK YÜKSEK BENZERLİK!**")
+                        st.progress(int(skor)/100)
+                        st.error(f"**{t['benzerlik']}** {skor:.1f}% - Neredeyse aynı resim!")
+                        st.warning(f"Kayıtlı eser: {t['blok']} {benzer_index}")
+                        st.warning(t['calmis'])
+                    elif skor > 85:
+                        st.session_state.ai_sayac += 1
+                        st.warning(f"⚠️ **YÜKSEK BENZERLİK!**")
+                        st.progress(int(skor)/100)
+                        st.warning(f"**{t['benzerlik']}** {skor:.1f}%")
+                        st.info(f"Benzer eser: {t['blok']} {benzer_index}")
+                    elif skor > 70:
+                        st.info(f"ℹ️ Orta seviye benzerlik: {skor:.1f}%")
+                        st.progress(int(skor)/100)
+                        st.info(f"Karşılaştırılan: {t['blok']} {benzer_index}")
             except:
                 pass
         
