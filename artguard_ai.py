@@ -10,43 +10,145 @@ from io import BytesIO
 st.set_page_config(page_title="ArtGuard AI", page_icon="🎨", layout="wide")
 
 st.markdown("""
-<style>
-    .main {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem;}
-    .stApp {background: #f8f9fa;}
-    h1 {text-align: center; color: #2c3e50; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);}
-    h2 {color: #34495e; border-bottom: 3px solid #3498db; padding-bottom: 10px;}
-    .stButton>button {
-        background: linear-gradient(90deg, #667eea, #764ba2);
-        color: white;
-        border-radius: 25px;
-        padding: 0.6rem 2rem;
-        font-weight: bold;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        transition: 0.3s;
+    <style>
+    /* Genel Arka Plan */
+    .stApp {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    .stButton>button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    
+    /* Ana İçerik */
+    .main .block-container {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
-    [data-testid="stMetricValue"] {
-        font-size: 2rem;
-        font-weight: bold;
+    
+    /* Başlıklar */
+    h1 {
+        background: linear-gradient(120deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        font-size: 3rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    h2 {
         color: #2c3e50;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 0.5rem;
+        margin-top: 1.5rem;
     }
-    .stExpander {
-        background: white;
+    
+    h3 {
+        color: #34495e;
+    }
+    
+    /* Butonlar */
+    .stButton > button {
+        background: linear-gradient(90deg, #667eea, #764ba2) !important;
+        color: white !important;
+        border-radius: 25px !important;
+        padding: 0.7rem 2rem !important;
+        font-weight: bold !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+    }
+    
+    /* Metrikler */
+    [data-testid="stMetricValue"] {
+        font-size: 2.5rem !important;
+        font-weight: bold !important;
+        color: #667eea !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        font-size: 1rem !important;
+        color: #7f8c8d !important;
+    }
+    
+    /* Uyarı Kutuları */
+    .stSuccess {
+        background-color: #d4edda !important;
+        border-left: 5px solid #28a745 !important;
+        padding: 1rem !important;
+        border-radius: 5px !important;
+    }
+    
+    .stError {
+        background-color: #f8d7da !important;
+        border-left: 5px solid #dc3545 !important;
+        padding: 1rem !important;
+        border-radius: 5px !important;
+    }
+    
+    .stWarning {
+        background-color: #fff3cd !important;
+        border-left: 5px solid #ffc107 !important;
+        padding: 1rem !important;
+        border-radius: 5px !important;
+    }
+    
+    .stInfo {
+        background-color: #d1ecf1 !important;
+        border-left: 5px solid #17a2b8 !important;
+        padding: 1rem !important;
+        border-radius: 5px !important;
+    }
+    
+    /* Expander */
+    .streamlit-expanderHeader {
+        background-color: #f8f9fa !important;
+        border-radius: 10px !important;
+        font-weight: bold !important;
+        color: #2c3e50 !important;
+    }
+    
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    [data-testid="stSidebar"] > div:first-child {
+        background: transparent;
+    }
+    
+    /* Input alanları */
+    .stTextInput > div > div > input {
+        border-radius: 10px !important;
+        border: 2px solid #e0e0e0 !important;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+    }
+    
+    /* File uploader */
+    [data-testid="stFileUploader"] {
+        background: #f8f9fa;
+        border: 2px dashed #667eea;
         border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        margin: 10px 0;
+        padding: 2rem;
     }
-    .uploadedFile {
-        background: white;
-        border-radius: 10px;
-        padding: 1rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    
+    /* Code blocks */
+    code {
+        background: #f4f4f4 !important;
+        padding: 0.3rem 0.6rem !important;
+        border-radius: 5px !important;
+        color: #667eea !important;
+        font-weight: bold !important;
     }
-</style>
+    </style>
 """, unsafe_allow_html=True)
 
 if 'zincir' not in st.session_state:
