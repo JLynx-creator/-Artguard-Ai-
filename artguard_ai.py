@@ -9,35 +9,6 @@ from io import BytesIO
 
 st.set_page_config(page_title="ArtGuard AI", page_icon="🎨", layout="wide")
 
-st.markdown("""
-<style>
-    .stApp {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    .main .block-container {
-        background: white;
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    }
-    h1 {
-        color: #2c3e50;
-        text-align: center;
-    }
-    h2 {
-        color: #34495e;
-        border-bottom: 2px solid #667eea;
-    }
-    .stButton > button {
-        background: linear-gradient(90deg, #667eea, #764ba2);
-        color: white;
-        border-radius: 20px;
-        padding: 0.6rem 2rem;
-        border: none;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 if 'zincir' not in st.session_state:
     st.session_state.zincir = []
 if 'hashler' not in st.session_state:
@@ -54,7 +25,48 @@ with st.sidebar:
     st.markdown("---")
     secilen_dil = st.selectbox("🌍 Dil", ["Türkçe", "English"])
     st.markdown("---")
+    tema = st.selectbox("🎨 Tema", ["Mor-Mavi", "Turuncu-Kırmızı", "Yeşil-Mavi", "Pembe-Mor", "Koyu Mod"])
+    st.markdown("---")
     st.info("💡 Blockchain + AI")
+
+temalar = {
+    "Mor-Mavi": {'g1': '#667eea', 'g2': '#764ba2'},
+    "Turuncu-Kırmızı": {'g1': '#f46b45', 'g2': '#eea849'},
+    "Yeşil-Mavi": {'g1': '#11998e', 'g2': '#38ef7d'},
+    "Pembe-Mor": {'g1': '#ee0979', 'g2': '#ff6a00'},
+    "Koyu Mod": {'g1': '#2c3e50', 'g2': '#34495e'}
+}
+
+t_renk = temalar[tema]
+
+st.markdown(f"""
+<style>
+    .stApp {{
+        background: linear-gradient(135deg, {t_renk['g1']} 0%, {t_renk['g2']} 100%);
+    }}
+    .main .block-container {{
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }}
+    h1 {{
+        color: #2c3e50;
+        text-align: center;
+    }}
+    h2 {{
+        color: #34495e;
+        border-bottom: 2px solid {t_renk['g1']};
+    }}
+    .stButton > button {{
+        background: linear-gradient(90deg, {t_renk['g1']}, {t_renk['g2']});
+        color: white;
+        border-radius: 20px;
+        padding: 0.6rem 2rem;
+        border: none;
+    }}
+</style>
+""", unsafe_allow_html=True)
 
 sozluk = {
     'Türkçe': {
@@ -170,7 +182,9 @@ def sertifika_yap(blok, dil):
     d.rectangle([10, 10, w-10, h-10], outline=c, width=5)
     d.rectangle([20, 20, w-20, h-20], outline=c, width=2)
     
-    qr_veri = f"Block#{blok['index']}|Hash:{blok['file_hash'][:16]}|Owner:{blok['owner']}"
+    sahip_temiz = blok['owner'].replace('ş','s').replace('Ş','S').replace('ğ','g').replace('Ğ','G').replace('ü','u').replace('Ü','U').replace('ö','o').replace('Ö','O').replace('ç','c').replace('Ç','C').replace('ı','i').replace('İ','I')
+    qr_veri = f"Block:{blok['index']}|Hash:{blok['file_hash'][:16]}|Owner:{sahip_temiz}"
+    
     qr = qrcode.QRCode(version=1, box_size=5, border=2)
     qr.add_data(qr_veri)
     qr.make(fit=True)
@@ -178,7 +192,7 @@ def sertifika_yap(blok, dil):
     img.paste(qr_img, (w - 180, 30))
     
     y = 60
-    baslik = "BLOCKCHAIN CERTIFICATE" if dil == 'English' else "BLOCKCHAIN SERTİFİKASI"
+    baslik = "BLOCKCHAIN CERTIFICATE" if dil == 'English' else "BLOCKCHAIN SERTIFIKASI"
     d.text((w//2 - 150, y), baslik, fill=c)
     y += 60
     d.text((50, y), f"{sozluk[dil]['eser_adi']} {blok['art_name']}", fill='black')
@@ -192,7 +206,7 @@ def sertifika_yap(blok, dil):
     d.text((50, y), f"Hash: {blok['file_hash'][:32]}...", fill='gray')
     y += 40
     d.text((50, y), blok['copyright_statement'][:60], fill='darkred')
-    alt = "ArtGuard AI Blockchain" if dil == 'English' else "ArtGuard AI Blockchain"
+    alt = "ArtGuard AI Blockchain"
     d.text((w//2 - 100, h - 50), alt, fill='gray')
     return img
 
