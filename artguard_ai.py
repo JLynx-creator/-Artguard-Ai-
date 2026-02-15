@@ -484,4 +484,4 @@ with col2:
 st.markdown("---")
 st.info(t['not'])
 
-st.markdown("<p style='text-align:center;color:#95a5a6;margin-top:2rem;'>Made with ❤️ for TÜBİTAK 4006</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;color:#95a5a6;margin-top:2rem;'>Made for TÜBİTAK 4006</p>", unsafe_allow_html=True)
