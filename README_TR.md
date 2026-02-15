@@ -28,7 +28,7 @@ Tarayıcıda açılır: `http://localhost:8501`
 
 ### Canlı Demo
 
-🌐 **[Buradan deneyin!](https://artguard-ai.streamlit.app)** *(Deploy sonrası linki güncelle)*
+🌐 **[Buradan deneyin!](https://artguard.streamlit.app/)**
 
 ## 📦 Gereksinimler
 
